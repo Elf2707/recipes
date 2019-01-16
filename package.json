@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "server": "nodemon src/server/index.js",
-    "client": "cd client && npm start",
+    "client": "cd src/client && yarn start",
     "dev":
-      "concurrently --names \"server,client\" \"npm run src/server/index.js --silent\" \"npm run client --silent\""
+      "concurrently --names \"server,client\" \"yarn server --silent\" \"yarn client --silent\""
   },
   "author": "",
   "license": "ISC",
