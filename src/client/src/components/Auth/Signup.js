@@ -1,14 +1,23 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
+import { withRouter } from 'react-router-dom'
 
 import { SIGNUP_USER } from '../../queries'
+import Error from '../Error'
 
-export default class Signup extends React.Component {
-  state = {
-    username: '',
-    email: '',
-    password: '',
-    passwordConfirmation: ''
+const initState = {
+  username: '',
+  email: '',
+  password: '',
+  passwordConfirmation: ''
+}
+
+class Signup extends React.Component {
+  state = { ...initState }
+
+  validateForm() {
+    const { username, email, password, passwordConfirmation } = this.state
+    return !username || !email || !password || password !== passwordConfirmation
   }
 
   handleInputChanges = e => {
@@ -18,8 +27,11 @@ export default class Signup extends React.Component {
 
   handleSubmit = (e, signupUser) => {
     e.preventDefault()
-    signupUser().then(data => {
-      console.log(data)
+    signupUser().then(async ({ data }) => {
+      localStorage.setItem('token', data.signupUser.token)
+      this.setState({ ...initState })
+      await this.props.refetch()
+      this.props.history.push('/')
     })
   }
 
@@ -66,9 +78,15 @@ export default class Signup extends React.Component {
                 onChange={this.handleInputChanges}
                 value={passwordConfirmation}
               />
-              <button type="submit" className="button-primary">
+              <button
+                type="submit"
+                className="button-primary"
+                disabled={loading || this.validateForm()}
+              >
                 Submit
               </button>
+
+              {error && <Error error={error} />}
             </form>
           )}
         </Mutation>
@@ -76,3 +94,5 @@ export default class Signup extends React.Component {
     )
   }
 }
+
+export default withRouter(Signup)

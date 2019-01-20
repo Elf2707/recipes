@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user
@@ -7,7 +8,23 @@ const createToken = (user, secret, expiresIn) => {
 
 exports.resolvers = {
   Query: {
-    getAllRecipes: async (_root, _args, { Recipe }) => await Recipe.find()
+    getAllRecipes: async (_root, _args, { Recipe }) => await Recipe.find(),
+
+    getRecipe: async (_root, { _id }, { Recipe }) =>
+      await Recipe.findOne({ _id }),
+
+    getCurrentUser: async (_root, _args, { currentUser, User }) => {
+      if (!currentUser) return null
+
+      const user = await User.findOne({
+        username: currentUser.username
+      }).populate({
+        path: 'favorites',
+        model: 'Recipe'
+      })
+
+      return user
+    }
   },
   Mutation: {
     addRecipe: async (
@@ -24,6 +41,15 @@ exports.resolvers = {
       }).save()
 
       return newRecipe
+    },
+
+    signinUser: async (root, { username, password }, { User }) => {
+      const user = await User.findOne({ username })
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        throw Error('Wrong credentials')
+      }
+
+      return { token: createToken(user, process.env.SECRET, '1hr') }
     },
 
     signupUser: async (root, { username, email, password }, { User }) => {

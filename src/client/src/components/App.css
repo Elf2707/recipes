@@ -4,19 +4,39 @@
 
 nav {
   text-align: center;
-  margin-bottom: 1em;
-  padding: 0.2em;
-  padding-top: 2em;
   background-color: #efefef;
+  padding: 0;
 }
 
 nav ul {
   display: flex;
+  align-items: center;
+  height: 100px;
+  list-style: none;
+}
+
+nav li {
+  display: flex;
+  min-width: 100px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+nav li:hover {
+  background-color: aqua;
+}
+
+.active {
+  font-weight: bold;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 16px 10%;
 }
 
