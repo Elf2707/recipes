@@ -8,7 +8,21 @@ const createToken = (user, secret, expiresIn) => {
 
 exports.resolvers = {
   Query: {
-    getAllRecipes: async (_root, _args, { Recipe }) => await Recipe.find(),
+    getAllRecipes: async (_root, _args, { Recipe }) =>
+      await Recipe.find().sort({ createdDate: 'desc' }),
+
+    searchRecipes: async (_root, { searchTerm }, { Recipe }) => {
+      if (searchTerm) {
+        return Recipe.find(
+          { $text: { $search: searchTerm } },
+          {
+            score: { $meta: 'textScore' }
+          }
+        ).sort({ score: { $meta: 'textScore' } })
+      } else {
+        return await Recipe.find().sort({ likes: 'desc', createdDate: 'desc' })
+      }
+    },
 
     getRecipe: async (_root, { _id }, { Recipe }) =>
       await Recipe.findOne({ _id }),

@@ -32,6 +32,12 @@ nav li:hover {
   font-weight: bold;
 }
 
+.search-results {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
 form {
   display: flex;
   flex-direction: column;

@@ -27,9 +27,13 @@ const RecipeSchema = new Schema({
     type: Number,
     default: 0
   },
-  userName: {
+  username: {
     type: String
   }
+})
+
+RecipeSchema.index({
+  '$**': 'text'
 })
 
 module.exports = mongoose.model('Recipe', RecipeSchema)

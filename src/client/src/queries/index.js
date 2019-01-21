@@ -11,6 +11,17 @@ export const GET_ALL_RECIPES = gql`
       category
       likes
       createdDate
+      username
+    }
+  }
+`
+
+export const SEARCH_RECIPES = gql`
+  query($searchTerm: String) {
+    searchRecipes(searchTerm: $searchTerm) {
+      _id
+      name
+      likes
     }
   }
 `
@@ -25,11 +36,36 @@ export const GET_RECIPE = gql`
       instructions
       createdDate
       likes
+      username
     }
   }
 `
 
 // Recipes Mutations
+export const ADD_RECIPE = gql`
+  mutation(
+    $name: String!
+    $description: String!
+    $category: String!
+    $instructions: String!
+    $username: String
+  ) {
+    addRecipe(
+      name: $name
+      description: $description
+      category: $category
+      instructions: $instructions
+      username: $username
+    ) {
+      _id
+      name
+      description
+      category
+      instructions
+      username
+    }
+  }
+`
 
 // User Queries
 export const GET_CURRENT_USER = gql`
