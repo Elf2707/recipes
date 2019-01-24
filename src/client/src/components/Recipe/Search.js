@@ -3,6 +3,7 @@ import { ApolloConsumer } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
 import { SEARCH_RECIPES } from '../../queries'
+import SearchItem from './SearchItem'
 
 class Search extends React.Component {
   state = { searchResults: [] }
@@ -31,12 +32,7 @@ class Search extends React.Component {
               />
               <ul className="search-results">
                 {searchResults.map(recipe => (
-                  <li key={recipe._id}>
-                    <Link to={`/recipe/${recipe._id}`}>
-                      <h4>{recipe.name}</h4>
-                    </Link>
-                    <p>{recipe.likes}</p>
-                  </li>
+                  <SearchItem key={recipe._id} recipe={recipe} />
                 ))}
               </ul>
             </div>

@@ -28,13 +28,13 @@ exports.typeDefs = `
     getRecipe(_id: ID): Recipe
     getCurrentUser: User
     searchRecipes(searchTerm: String): [Recipe]
+    getUserRecipes(username: String!): [Recipe]
   }
 
   type Mutation {
     addRecipe(name: String!, description: String!, category: String!, instructions: String!, username: String): Recipe
-
     signinUser(username: String!, password: String!): Token
-
     signupUser(username: String!, email: String!, password: String!): Token
+    deleteUserRecipe(_id: ID): Recipe
   }
 `

@@ -74,6 +74,20 @@ export const GET_CURRENT_USER = gql`
       username
       joinDate
       email
+      favorites {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const GET_USER_RECIPES = gql`
+  query($username: String!) {
+    getUserRecipes(username: $username) {
+      _id
+      name
+      likes
     }
   }
 `
@@ -91,6 +105,14 @@ export const SIGNUP_USER = gql`
   mutation SignupUser($username: String!, $email: String!, $password: String!) {
     signupUser(username: $username, email: $email, password: $password) {
       token
+    }
+  }
+`
+
+export const DELETE_USER_RECIPE = gql`
+  mutation($_id: ID) {
+    deleteUserRecipe(_id: $_id) {
+      _id
     }
   }
 `
