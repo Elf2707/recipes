@@ -83,6 +83,29 @@ exports.resolvers = {
       }).save()
 
       return { token: createToken(newUser, process.env.SECRET, '1hr') }
+    },
+
+    likeRecipe: async (_root, { _id, username }, { Recipe, User }) => {
+      const recipe = await Recipe.findOneAndUpdate(
+        { _id },
+        { $inc: { likes: 1 } }
+      )
+      await User.findOneAndUpdate(
+        { username },
+        { $addToSet: { favorites: _id } }
+      )
+
+      return recipe
+    },
+
+    unlikeRecipe: async (_root, { _id, username }, { Recipe, User }) => {
+      const recipe = await Recipe.findOneAndUpdate(
+        { _id },
+        { $inc: { likes: -1 } }
+      )
+      await User.findOneAndUpdate({ username }, { $pull: { favorites: _id } })
+
+      return recipe
     }
   }
 }

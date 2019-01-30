@@ -1,6 +1,5 @@
 import React from 'react'
 import { ApolloConsumer } from 'react-apollo'
-import { Link } from 'react-router-dom'
 
 import { SEARCH_RECIPES } from '../../queries'
 import SearchItem from './SearchItem'
